@@ -1,0 +1,80 @@
+h1 {
+  padding: 0 1rem;
+}
+
+h2 {
+  padding: 1rem;
+}
+
+mat-toolbar {
+  position:fixed;
+  top:0;
+  z-index: 2;
+  background: #4e78dd;
+}
+
+mat-sidenav-container {
+  height:100%;
+  padding-left: 15px;
+  padding-top: 20px;
+}
+
+mat-sidenav {
+  padding-top: 3.5rem;
+  @media screen and (min-width: 600px) {
+    padding-top: 4rem;
+  }
+
+  .entry{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding:0.75rem;
+  }
+}
+
+.list-container {
+  width: 95%;
+}
+
+mat-sidenav-content{
+  padding-top: 3.5rem;
+  @media screen and (min-width: 600px) {
+    padding-top: 4rem;
+  }
+}
+
+.roleField {
+  padding-left: 45%;
+  padding-top: 20px;
+  padding-right: 20px;
+}
+
+.logout-button {
+  background-color: #130bdd;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #1872e8;
+  transform: scale(1.05);
+}
+
+.logout-button:focus {
+  outline: none;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #1976d2;
+}
+
+.mat-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,11 @@
+<div class="main">
+  <p class="sign center">Registreeri kasutaja</p>
+  <form class="form1" [formGroup]="registerUserForm" (ngSubmit)="onSubmit()">
+    <input class="un" type="text" matInput formControlName="firstName" placeholder="Eesnimi" required>
+    <input class="un" type="text" matInput formControlName="lastName" placeholder="Perenimi" required>
+    <input class="un" type="text" matInput formControlName="email" placeholder="Email" required>
+    <input class="un" type="password" matInput formControlName="password" placeholder="Salasõna" required>
+    <button type="submit" class="submit">Registreeri</button>
+  </form>
+  <p class="center paddingTop25"><a routerLink="/login">Tagasi</a></p>
+</div>

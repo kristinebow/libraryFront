@@ -1,0 +1,9 @@
+<div class="main">
+  <p class="sign center">Logi sisse</p>
+  <form class="form1" (ngSubmit)="onSubmit()">
+    <input class="un " type="text" name="email" [(ngModel)]="credentials.email" placeholder="Email">
+    <input class="pass" type="password" name="password" [(ngModel)]="credentials.password" placeholder="Salasõna">
+    <button type="submit" class="submit">Sisene</button>
+  </form>
+  <p class="center paddingTop25">Pole veel kasutajat? <a routerLink="/register">Registreeri</a></p>
+</div>

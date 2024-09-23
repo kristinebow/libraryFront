@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Lisa raamat</h2>
+<form (ngSubmit)="onSubmit()" [formGroup]="bookAddForm">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Pealkiri</mat-label>
+      <input matInput formControlName="title" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Autor</mat-label>
+      <input matInput formControlName="author" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Väljastamise aasta</mat-label>
+      <input matInput formControlName="publication_year" required>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Tühista</button>
+    <button mat-button type="submit">Lisa</button>
+  </mat-dialog-actions>
+</form>
+

@@ -1,0 +1,62 @@
+h1 {
+  padding: 0 1rem;
+}
+
+h2 {padding: 1rem;}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.book-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-form label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.book-form input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 450px;
+  border-radius: 15px;
+}
+
+.book-form button {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #99aef6, #4e78dd);
+  border: 0;
+  padding: 10px 40px;
+  font-family: 'Ubuntu', sans-serif;
+  margin-left: 20%;
+  font-size: 20px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+  width: 300px;
+}
+
+.book-form button:hover {
+  background-color: #0056b3;
+}
+
+mat-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button {
+  margin-top: 20px;
+}
+

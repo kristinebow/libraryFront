@@ -1,0 +1,96 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button aria-label="Menu icon" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1>Raamatukogusüsteem RAAMAT</h1>
+  <mat-form-field appearance="fill" class="roleField">
+    <mat-select [(value)]="selectedRole" (selectionChange)="onRoleChange($event.value)">
+      <mat-option value="user">User</mat-option>
+      <mat-option value="admin">Admin</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button (click)="this.loginService.logout()" class="logout-button">Logi välja</button>
+</mat-toolbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav [opened]="!isCollapsed" mode="side">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/list" routerLinkActive="active-link">
+        <span class="entry">
+          <mat-icon>search</mat-icon>
+          <span>Otsi raamatut</span>
+        </span>
+      </a>
+      <a mat-list-item (click)="this.openAddBookDialog()" *ngIf="authService.isAdmin()">
+        <span class="entry">
+          <mat-icon>library_add</mat-icon>
+          <span>Lisa raamat</span>
+        </span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="example-header">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Otsi pealkirja või autorit"
+          (input)="onSearchChange($event)"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="list-container mat-elevation-z8">
+
+      <mat-table [dataSource]="filteredBooks" matSort>
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef> Pealkiri </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+          <mat-header-cell *matHeaderCellDef> Autor </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.author}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="bookedUntil">
+          <mat-header-cell *matHeaderCellDef>Broneeritud kuni</mat-header-cell>
+          <mat-cell *matCellDef="let row"> <span>{{ row.bookedUntil | date:'dd.MM.yyyy' }}</span> </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="reserve">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-button (click)="reserveBook(row.id)" *ngIf="!row.bookedUntil && authService.isUser()">
+              Broneeri
+            </button>
+            <button mat-button (click)="cancelBookReservation(row.id)" *ngIf="row.bookedUntil && !row.received">
+              Tühista broneering
+            </button>
+            <button mat-button (click)="receiveBook(row.id)" *ngIf="row.bookedUntil && !row.received && authService.isUser()">
+              Kätte saadud
+            </button>
+            <button mat-button (click)="returnBook(row.id)" *ngIf="row.received && authService.isUser()">
+              Tagastan
+            </button>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions" *ngIf="authService.isAdmin()">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="deleteBook(row.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    </div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
