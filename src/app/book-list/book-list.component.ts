@@ -4,15 +4,19 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatSidenavModule, MatSidenavContainer, MatSidenav} from "@angular/material/sidenav";
+import {MatSidenav, MatSidenavContainer, MatSidenavModule} from "@angular/material/sidenav";
 import {MatList, MatListItem, MatNavList} from "@angular/material/list";
 import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {
-  MatCell, MatCellDef,
+  MatCell,
+  MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef,
-  MatRow, MatRowDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
@@ -23,7 +27,6 @@ import {ApiService} from "../api.service";
 import {AuthService} from "../service/auth.service";
 import {DatePipe, NgIf} from "@angular/common";
 import {MatOption, MatSelect} from "@angular/material/select";
-import {animate} from "@angular/animations";
 import {NotificationService} from "../service/notification.service";
 import {LoginService} from "../service/login.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -78,14 +81,13 @@ export class BookListComponent implements OnInit, AfterViewInit {
   filteredBooks: BookData[] = [];
   searchTerm: string = '';
 
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatSort) sort: MatSort | undefined;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator | null = null;
+  @ViewChild(MatSort, { static: false }) sort: MatSort | null = null;
 
   constructor(private bookService: ApiService, protected authService: AuthService,
               protected notifications: NotificationService, protected loginService: LoginService, protected dialog: MatDialog) {
-    let allBooks: any[] | undefined = [];
-    this.books = new MatTableDataSource(allBooks);
     this.selectedRole = this.authService.getRole();
+    this.books = new MatTableDataSource<BookData>();
     if (this.authService.isAdmin()) {
       this.displayedColumns.push('actions');
     }
@@ -123,19 +125,18 @@ export class BookListComponent implements OnInit, AfterViewInit {
   }
 
   fetchBooks(): void {
-    let allBooks: any[] | undefined = [];
-    this.bookService.findAllBooks().forEach(value => {
-      this.books.data = value.sort((a: { id: number; }, b: { id: number; }) => a.id - b.id); // Sort by ID
-      // @ts-ignore
-      this.books.paginator = this.paginator; // Set paginator
-      // @ts-ignore
-      this.books.sort = this.sort; // Set sort
-      this.books.data = value
-      value.forEach((book: any) => {
-        allBooks.push(createBook(book));
-        this.filteredBooks = this.books.data;
-      })
-    }).then(() =>  this.books = new MatTableDataSource(allBooks));
+    this.bookService.findAllBooks().subscribe(value => {
+      this.books.data = value.map(createBook).sort((a: BookData, b: BookData) => a.id - b.id);
+      this.filteredBooks = this.books.data;
+      if (this.paginator) {
+        this.books.paginator = this.paginator;
+      }
+      if (this.sort) {
+        this.books.sort = this.sort;
+      }
+    }, err => {
+      console.error('Error fetching books:', err);
+    });
   }
 
   onSearchChange(event: Event): void {
@@ -147,14 +148,11 @@ export class BookListComponent implements OnInit, AfterViewInit {
     );
   }
   ngAfterViewInit() {
-    // @ts-ignore
-    this.books.paginator = this.paginator; // Ensure paginator is set
-    // @ts-ignore
-    this.books.sort = this.sort; // Ensure sort is set
+
   }
 
   deleteBook(id: number): void {
-    if (confirm('Are you sure you want to delete this book?')) {
+    if (confirm('Oled kindel, et soovid selle raamatu kustutada?')) {
       this.bookService.deleteBook(id).subscribe({
         next: () => {
           this.books.data = this.books.data.filter(book => book.id !== id);

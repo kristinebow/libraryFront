@@ -24,13 +24,6 @@ export class LoginService {
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('jwt');
-    console.log(localStorage.getItem('jwt'))
     return token !== null;
   }
-
-  getToken(): string | null {
-    return this.token || localStorage.getItem('jwt');
-  }
-
-
 }
