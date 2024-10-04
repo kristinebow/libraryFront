@@ -32,10 +32,12 @@ export class LoginComponent {
       response => {
         console.log('User logged in successfully', response);
         const token = response.token;
+        const userRole = response.role;
+        const userId = response.userId;
         if (token) {
-          console.log('i should be here??????')
           localStorage.setItem('jwt', token);
-          console.log('i should go to /list')
+          localStorage.setItem('role', userRole);
+          localStorage.setItem('userId', userId)
           this.router.navigate(['/list']);
         }
       },

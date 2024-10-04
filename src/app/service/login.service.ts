@@ -7,8 +7,7 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:8081/api'; // Your backend URL
-  private token: string | null = null;
+  private apiUrl = 'http://localhost:8081/api';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -17,13 +16,22 @@ export class LoginService {
   }
 
   logout() {
-    this.token = null;
     localStorage.removeItem('jwt');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
     this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('jwt');
     return token !== null;
+  }
+
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'ADMIN';
+  }
+
+  isUser(): boolean {
+    return localStorage.getItem('role') === 'USER';
   }
 }

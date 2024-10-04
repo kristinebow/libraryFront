@@ -6,10 +6,11 @@ body {
 .main {
   background-color: #FFFFFF;
   width: 400px;
-  height: 500px;
+  height: 600px;
   margin: 7em auto;
   border-radius: 1.5em;
   box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.14);
+  padding: 20px;
 }
 
 .sign {
@@ -42,10 +43,27 @@ form.form1 {
   padding-top: 25px;
 }
 
-
 .un:focus {
   border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
 
+.role-selection {
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: rgba(240, 240, 240, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.role-selection p {
+  margin: 0 0 10px;
+  font-weight: bold;
+  color: #1e5bcc;
+}
+
+.role-option {
+  margin: 10px 0;
+  display: block;
 }
 
 .submit {
@@ -64,7 +82,7 @@ form.form1 {
 a {
   text-shadow: 0 0 3px rgba(117, 117, 117, 0.12);
   color: #2d41d6;
-  text-decoration: none
+  text-decoration: none;
 }
 
 .center {
@@ -83,6 +101,6 @@ a {
   font-family: 'Arial', sans-serif;
 }
 
-.mdc-snackbar__label {
-  background: #ed3131;
+.invalid {
+  border: 2px solid red;
 }

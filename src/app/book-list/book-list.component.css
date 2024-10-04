@@ -15,6 +15,7 @@ mat-toolbar {
 
 mat-sidenav-container {
   height:100%;
+  max-width: 80%;
   padding-left: 15px;
   padding-top: 20px;
 }
@@ -25,7 +26,7 @@ mat-sidenav {
     padding-top: 4rem;
   }
 
-  .entry{
+  .entry {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -37,11 +38,16 @@ mat-sidenav {
   width: 95%;
 }
 
-mat-sidenav-content{
+mat-sidenav-content {
   padding-top: 3.5rem;
   @media screen and (min-width: 600px) {
     padding-top: 4rem;
   }
+}
+
+mat-form-field {
+  padding-right: 25px;
+  height: 70px;
 }
 
 .roleField {
@@ -58,6 +64,7 @@ mat-sidenav-content{
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  margin-left: 60%;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -77,4 +84,24 @@ mat-sidenav-content{
 
 .mat-list-item:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.search-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.search-button:active {
+  transform: translateY(0);
 }

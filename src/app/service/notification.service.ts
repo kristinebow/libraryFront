@@ -8,16 +8,16 @@ export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
   showSuccess(message: string) {
-    this.snackBar.open(message, 'Close', {
-      duration: 10000, // Duration in milliseconds
-      panelClass: ['success-snackbar'], // Custom class for styling
+    this.snackBar.open(message, 'Sulge', {
+      duration: 10000,
+      panelClass: ['success-snackbar'],
     });
   }
 
   showError(message: string) {
-    this.snackBar.open(message, 'Close', {
+    this.snackBar.open(message, 'Sulge', {
       duration: 10000,
-      panelClass: ['error-snackbar'], // Custom class for styling
+      panelClass: ['error-snackbar'],
     });
   }
 }

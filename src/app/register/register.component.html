@@ -1,10 +1,49 @@
 <div class="main">
   <p class="sign center">Registreeri kasutaja</p>
   <form class="form1" [formGroup]="registerUserForm" (ngSubmit)="onSubmit()">
-    <input class="un" type="text" matInput formControlName="firstName" placeholder="Eesnimi" required>
-    <input class="un" type="text" matInput formControlName="lastName" placeholder="Perenimi" required>
-    <input class="un" type="text" matInput formControlName="email" placeholder="Email" required>
-    <input class="un" type="password" matInput formControlName="password" placeholder="Salasõna" required>
+    <input
+      class="un"
+      type="text"
+      matInput
+      formControlName="firstName"
+      placeholder="Eesnimi"
+      required
+      [ngClass]="{'invalid': registerUserForm.get('firstName')?.invalid && (registerUserForm.get('firstName')?.dirty || registerUserForm.get('firstName')?.touched)}"
+    >
+    <input
+      class="un"
+      type="text"
+      matInput
+      formControlName="lastName"
+      placeholder="Perenimi"
+      required
+      [ngClass]="{'invalid': registerUserForm.get('lastName')?.invalid && (registerUserForm.get('lastName')?.dirty || registerUserForm.get('lastName')?.touched)}"
+    >
+    <input
+      class="un"
+      type="text"
+      matInput
+      formControlName="email"
+      placeholder="Email"
+      required
+      [ngClass]="{'invalid': registerUserForm.get('email')?.invalid && (registerUserForm.get('email')?.dirty || registerUserForm.get('email')?.touched)}"
+    >
+    <input
+      class="un"
+      type="password"
+      matInput
+      formControlName="password"
+      placeholder="Salasõna"
+      required
+      [ngClass]="{'invalid': registerUserForm.get('password')?.invalid && (registerUserForm.get('password')?.dirty || registerUserForm.get('password')?.touched)}"
+    >
+    <div class="role-selection">
+      <p>Vali roll:</p>
+      <mat-radio-group formControlName="role" required>
+        <mat-radio-button value="USER">Tavakasutaja</mat-radio-button>
+        <mat-radio-button value="ADMIN">Administraator</mat-radio-button>
+      </mat-radio-group>
+    </div>
     <button type="submit" class="submit">Registreeri</button>
   </form>
   <p class="center paddingTop25"><a routerLink="/login">Tagasi</a></p>

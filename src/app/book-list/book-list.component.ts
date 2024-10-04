@@ -1,6 +1,5 @@
 // @ts-ignore
-
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -22,15 +21,15 @@ import {
 } from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatFormField, MatInput} from "@angular/material/input";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ApiService} from "../api.service";
-import {AuthService} from "../service/auth.service";
 import {DatePipe, NgIf} from "@angular/common";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {NotificationService} from "../service/notification.service";
 import {LoginService} from "../service/login.service";
 import {MatDialog} from "@angular/material/dialog";
 import {BookAddComponent} from "../book-add/book-add.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-book-list',
@@ -65,30 +64,36 @@ import {BookAddComponent} from "../book-add/book-add.component";
     MatSelect,
     MatOption,
     DatePipe,
-    RouterLinkActive
+    RouterLinkActive,
+    FormsModule
   ],
   providers: [ApiService],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
-export class BookListComponent implements OnInit, AfterViewInit {
+export class BookListComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   isCollapsed = false;
   displayedColumns = ['id', 'name', 'bookedUntil', 'reserve'];
   books: MatTableDataSource<BookData>;
-  selectedRole: string;
-  filteredBooks: BookData[] = [];
-  searchTerm: string = '';
+  selectedRole: string | null;
+  author: string = '';
+  title: string = '';
+  pageSize: number = 10;
+  currentPage: number = 0;
+  totalElements: number = 0;
+  pageSizeOptions: number[] = [5, 10, 20, 50];
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator | null = null;
   @ViewChild(MatSort, { static: false }) sort: MatSort | null = null;
 
-  constructor(private bookService: ApiService, protected authService: AuthService,
-              protected notifications: NotificationService, protected loginService: LoginService, protected dialog: MatDialog) {
-    this.selectedRole = this.authService.getRole();
+  constructor(private bookService: ApiService, protected notifications: NotificationService,
+              protected loginService: LoginService, protected dialog: MatDialog) {
+    this.selectedRole = localStorage.getItem('role')
+    console.log(this.selectedRole, 'role')
     this.books = new MatTableDataSource<BookData>();
-    if (this.authService.isAdmin()) {
+    if (this.loginService.isAdmin()) {
       this.displayedColumns.push('actions');
     }
   }
@@ -112,43 +117,20 @@ export class BookListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onRoleChange(newRole: string) {
-    this.authService.setRole(newRole);
-  }
-
-
   updateDisplayedColumns(): void {
     this.displayedColumns = ['id', 'title', 'author', 'bookedUntil', 'reserve'];
-    if (this.authService.isAdmin()) {
+    if (this.loginService.isAdmin()) {
       this.displayedColumns.push('actions');
     }
   }
 
   fetchBooks(): void {
-    this.bookService.findAllBooks().subscribe(value => {
-      this.books.data = value.map(createBook).sort((a: BookData, b: BookData) => a.id - b.id);
-      this.filteredBooks = this.books.data;
-      if (this.paginator) {
-        this.books.paginator = this.paginator;
-      }
-      if (this.sort) {
-        this.books.sort = this.sort;
-      }
+    this.bookService.searchBooks(this.author, this.title, this.currentPage, this.pageSize).subscribe((value) => {
+      this.books.data = value.content.map(createBook);
+      this.totalElements = value.totalElements;
     }, err => {
       console.error('Error fetching books:', err);
     });
-  }
-
-  onSearchChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.searchTerm = input.value;
-    this.filteredBooks = this.books.data.filter(book =>
-      book.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
-  ngAfterViewInit() {
-
   }
 
   deleteBook(id: number): void {
@@ -167,7 +149,9 @@ export class BookListComponent implements OnInit, AfterViewInit {
   }
 
   reserveBook(id: number): void {
-    this.bookService.reserveBook(id).subscribe({
+    const userId = localStorage.getItem('userId');
+    // @ts-ignore
+    this.bookService.reserveBook(id, userId).subscribe({
       next: () => {
         this.notifications.showSuccess('Raamat edukalt broneeritud!');
         this.fetchBooks();
@@ -218,12 +202,38 @@ export class BookListComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  search(author: string, title: string) {
+    this.author = author;
+    this.title = title;
+    this.currentPage = 0;
+    this.fetchBooks();
+  }
+
+
+  clearFilters() {
+    this.author = '';
+    this.title = '';
+    this.fetchBooks();
+  }
+
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.fetchBooks();
+  }
+
+  isLoggedInUserBooked(bookedByUserId: number) {
+    const userId = Number(localStorage.getItem('userId'));
+    if (isNaN(userId)) {
+      return false;
+    }
+    return Number(userId) === bookedByUserId;
+  }
+
   ngOnInit(): void {
     this.updateDisplayedColumns();
     this.fetchBooks();
-    this.authService.roleChanged.subscribe(() => {
-      this.updateDisplayedColumns();
-    });
   }
 }
 
@@ -233,10 +243,10 @@ function createBook(book: any): BookData {
     title: book.title,
     author: book.author,
     bookedUntil: book.bookedUntil,
-    received: book.received
+    received: book.received,
+    bookedByUserId: book.bookedByUserId
   };
 }
-
 
 export interface BookData {
   id: number;
@@ -244,5 +254,6 @@ export interface BookData {
   author: string;
   bookedUntil: string;
   received: boolean;
+  bookedByUserId: number;
 }
 
