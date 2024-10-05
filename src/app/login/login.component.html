@@ -1,9 +1,27 @@
 <div class="main">
   <p class="sign center">Logi sisse</p>
-  <form class="form1" (ngSubmit)="onSubmit()">
-    <input class="un " type="text" name="email" [(ngModel)]="credentials.email" placeholder="Email">
-    <input class="pass" type="password" name="password" [(ngModel)]="credentials.password" placeholder="Salasõna">
-    <button type="submit" class="submit">Sisene</button>
+  <form class="form1" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <input
+      class="un"
+      type="text"
+      name="email"
+      [(ngModel)]="credentials.email"
+      placeholder="Email"
+      required
+      #emailInput="ngModel"
+      [ngClass]="{'invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched)}"
+    >
+    <input
+      class="pass"
+      type="password"
+      name="password"
+      [(ngModel)]="credentials.password"
+      placeholder="Salasõna"
+      required
+      #passwordInput="ngModel"
+      [ngClass]="{'invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)}"
+    >
+    <button type="submit" class="submit" [disabled]="loginForm.invalid">Sisene</button>
   </form>
   <p class="center paddingTop25">Pole veel kasutajat? <a routerLink="/register">Registreeri</a></p>
 </div>

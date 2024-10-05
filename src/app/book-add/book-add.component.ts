@@ -67,7 +67,7 @@ export class BookAddComponent implements OnInit {
       validators: [Validators.required, Validators.minLength(3)]
     }),
     author: new FormControl('', { validators: [Validators.required] }),
-    publication_year: new FormControl('', { validators: [Validators.required] })
+    publicationYear: new FormControl('', { validators: [Validators.required] })
   });
 
   constructor(private fb: FormBuilder, private bookService: ApiService, private router: Router,
@@ -79,7 +79,7 @@ export class BookAddComponent implements OnInit {
     this.bookAddForm = this.fb.group({
       title: ['', [Validators.required]],
       author: ['', [Validators.required]],
-      publication_year: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]]
+      publicationYear: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]]
     });
   }
 

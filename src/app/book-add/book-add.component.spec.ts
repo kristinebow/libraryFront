@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatDialogRef } from '@angular/material/dialog';
 import { BookAddComponent } from './book-add.component';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { ReactiveFormsModule } from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('BookAddComponent', () => {
   let component: BookAddComponent;
@@ -8,9 +12,20 @@ describe('BookAddComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BookAddComponent]
-    })
-    .compileComponents();
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        ReactiveFormsModule,
+        BookAddComponent,
+        BrowserAnimationsModule
+      ],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: { close: jasmine.createSpy('close') } // Mock the MatDialogRef
+        }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BookAddComponent);
     component = fixture.componentInstance;

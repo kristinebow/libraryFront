@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
-import {NgOptimizedImage} from "@angular/common";
+import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
 import {RegisterComponent} from "../register/register.component";
 import {LoginService} from "../service/login.service";
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NotificationService} from "../service/notification.service";
 
 @Component({
@@ -14,7 +14,10 @@ import {NotificationService} from "../service/notification.service";
     RouterOutlet,
     NgOptimizedImage,
     RegisterComponent,
-    FormsModule
+    FormsModule,
+    NgIf,
+    ReactiveFormsModule,
+    NgClass
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

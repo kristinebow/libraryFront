@@ -92,3 +92,7 @@ a {
 .paddingTop25 {
   padding-top: 25px;
 }
+
+.un.invalid, .pass.invalid {
+  border: 2px solid red;
+}

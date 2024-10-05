@@ -75,7 +75,7 @@ export class BookListComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   isCollapsed = false;
-  displayedColumns = ['id', 'name', 'bookedUntil', 'reserve'];
+  displayedColumns = ['name', 'publicationYear', 'bookedUntil', 'reserve'];
   books: MatTableDataSource<BookData>;
   selectedRole: string | null;
   author: string = '';
@@ -91,7 +91,6 @@ export class BookListComponent implements OnInit {
   constructor(private bookService: ApiService, protected notifications: NotificationService,
               protected loginService: LoginService, protected dialog: MatDialog) {
     this.selectedRole = localStorage.getItem('role')
-    console.log(this.selectedRole, 'role')
     this.books = new MatTableDataSource<BookData>();
     if (this.loginService.isAdmin()) {
       this.displayedColumns.push('actions');
@@ -118,7 +117,7 @@ export class BookListComponent implements OnInit {
   }
 
   updateDisplayedColumns(): void {
-    this.displayedColumns = ['id', 'title', 'author', 'bookedUntil', 'reserve'];
+    this.displayedColumns = ['title', 'author','publicationYear', 'bookedUntil', 'reserve'];
     if (this.loginService.isAdmin()) {
       this.displayedColumns.push('actions');
     }
@@ -244,7 +243,8 @@ function createBook(book: any): BookData {
     author: book.author,
     bookedUntil: book.bookedUntil,
     received: book.received,
-    bookedByUserId: book.bookedByUserId
+    bookedByUserId: book.bookedByUserId,
+    publicationYear: book.publicationYear
   };
 }
 
@@ -255,5 +255,6 @@ export interface BookData {
   bookedUntil: string;
   received: boolean;
   bookedByUserId: number;
+  publicationYear: number;
 }
 

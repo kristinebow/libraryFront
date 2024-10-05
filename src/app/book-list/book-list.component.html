@@ -38,18 +38,17 @@
 
     <div class="list-container mat-elevation-z8">
       <mat-table [dataSource]="books" matSort>
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-        </ng-container>
         <ng-container matColumnDef="title">
           <mat-header-cell *matHeaderCellDef> Pealkiri </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
         </ng-container>
-
         <ng-container matColumnDef="author">
           <mat-header-cell *matHeaderCellDef> Autor </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.author}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="publicationYear">
+          <mat-header-cell *matHeaderCellDef> Väljastamise aasta </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.publicationYear}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="bookedUntil">
           <mat-header-cell *matHeaderCellDef>Broneeritud kuni</mat-header-cell>
