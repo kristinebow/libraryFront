@@ -14,8 +14,8 @@ describe('BookListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BookListComponent,
-        HttpClientTestingModule, // Use HttpClientTestingModule for testing HTTP
-        RouterTestingModule, // Add RouterTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule
       ]

@@ -13,8 +13,8 @@ describe('RegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegisterComponent,
-        HttpClientTestingModule, // Use HttpClientTestingModule for testing HTTP
-        RouterTestingModule, // Add RouterTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule,
         ReactiveFormsModule,
         ]
     })

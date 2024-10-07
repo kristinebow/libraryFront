@@ -14,11 +14,11 @@ describe('SuccessOverlayComponent', () => {
       providers: [
         {
           provide: MatDialogRef,
-          useValue: { close: jasmine.createSpy('close') } // Mock the MatDialogRef
+          useValue: { close: jasmine.createSpy('close') }
         },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({}) } // Mock the ActivatedRoute
+          useValue: { params: of({}) }
         }
       ]
     }).compileComponents();
